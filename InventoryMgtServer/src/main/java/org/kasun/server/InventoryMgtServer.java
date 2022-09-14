@@ -26,18 +26,14 @@ public class InventoryMgtServer {
     AddInventoryServiceImpl AddInventoryService;
     DistributedTx updateStockOrderTx;
     UpdateInventoryServiceImpl UpdateInventoryService;
-    DistributedTx deleteStockOrderTx;
-    DeleteInventoryServiceImpl DeleteInventoryService;
 
     public InventoryMgtServer(String host, int port) throws InterruptedException, IOException, KeeperException {
         this.serverPort = port;
         leaderLock = new DistributedLock("InventoryMgtServerCluster", buildServerData(host, port));
         AddInventoryService = new AddInventoryServiceImpl(this);
         UpdateInventoryService = new UpdateInventoryServiceImpl(this);
-        DeleteInventoryService = new DeleteInventoryServiceImpl(this);
         addStockOrderTx = new DistributedTxParticipant(AddInventoryService);
         updateStockOrderTx = new DistributedTxParticipant(UpdateInventoryService);
-        deleteStockOrderTx = new DistributedTxParticipant(DeleteInventoryService);
     }
 
     public static String buildServerData(String IP, int port) {
@@ -64,7 +60,6 @@ public class InventoryMgtServer {
                 .forPort(serverPort)
                 .addService(AddInventoryService)
                 .addService(UpdateInventoryService)
-                .addService(DeleteInventoryService)
                 .build();
         server.start();
         System.out.println("InventoryMgtServer Started on port " + serverPort);
@@ -111,7 +106,6 @@ public class InventoryMgtServer {
         isLeader.set(true);
         addStockOrderTx = new DistributedTxCoordinator(AddInventoryService);
         updateStockOrderTx = new DistributedTxCoordinator(UpdateInventoryService);
-        deleteStockOrderTx = new DistributedTxCoordinator(DeleteInventoryService);
     }
 
     public List<String[]> getOthersData() throws KeeperException, InterruptedException {
@@ -144,6 +138,8 @@ public class InventoryMgtServer {
 
     public void updateStockOrder(String stockOrderId, StockOrder stockOrder) {
         StockOrder matchingStockOrder = stockOrderBook.get(stockOrderId);
+        stockOrderBook.forEach((k,v)->System.out.println("Key : " + k + " Value : " + v));
+        System.out.println(stockOrderId);
 
         if(matchingStockOrder != null){
             matchingStockOrder.setStockSymbol(stockOrder.getStockSymbol());
@@ -202,7 +198,4 @@ public class InventoryMgtServer {
         return updateStockOrderTx;
     }
 
-    public DistributedTx getDeleteStockOrderTx() {
-        return deleteStockOrderTx;
-    }
 }

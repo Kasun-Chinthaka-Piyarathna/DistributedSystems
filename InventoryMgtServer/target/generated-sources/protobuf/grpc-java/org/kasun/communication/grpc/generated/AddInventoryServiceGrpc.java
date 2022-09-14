@@ -6,7 +6,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.36.0)",
-    comments = "Source: StockTradingSystem.proto")
+    comments = "Source: InventoryMgtSystem.proto")
 public final class AddInventoryServiceGrpc {
 
   private AddInventoryServiceGrpc() {}
@@ -226,7 +226,7 @@ public final class AddInventoryServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return org.kasun.communication.grpc.generated.StockTradingSystem.getDescriptor();
+      return org.kasun.communication.grpc.generated.InventoryMgtSystem.getDescriptor();
     }
 
     @java.lang.Override
