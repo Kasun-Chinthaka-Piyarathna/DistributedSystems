@@ -1,0 +1,37 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package org.kasun.communication.grpc.generated;
+
+message StockOrderRequest {
+  string stockSymbol = 1;
+  int32 quantity = 2;
+  double price = 3;
+  string orderType = 4;
+  bool isSentByPrimary = 5;
+}
+
+message UpdateStockOrderRequest {
+  string orderId = 1;
+  StockOrderRequest stockOrderRequest = 2;
+}
+
+message DeleteStockOrderRequest {
+  string orderId = 1;
+  bool isSentByPrimary = 2;
+}
+
+message StockOrderResponse {
+  bool requestStatus = 1;
+}
+
+service AddInventoryService {
+  rpc addStockOrder(StockOrderRequest) returns (StockOrderResponse);
+}
+
+service UpdateInventoryService {
+  rpc updateStockOrder(UpdateStockOrderRequest) returns (StockOrderResponse);
+}
+
+service DeleteInventoryService {
+  rpc deleteStockOrder(DeleteStockOrderRequest) returns (StockOrderResponse);
+}
