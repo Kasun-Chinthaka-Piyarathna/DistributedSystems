@@ -1,0 +1,8 @@
+.idea
+.idea/*
+InventoryMgtClient/.idea
+InventoryMgtClient/target
+InventoryMgtServer/.idea
+InventoryMgtServer/target
+InventoryMgtDistributedLock/.idea
+InventoryMgtDistributedLock/target
